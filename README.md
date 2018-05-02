@@ -8,7 +8,7 @@ First clone the project
 git clone <repo_name>
 ```
 
-We use [Create React App (https://github.com/facebookincubator/create-react-app) to build this really simple app, so all you need to do for now is just install all libraries:
+We use [Create React App] (https://github.com/facebookincubator/create-react-app) to build this really simple app, so all you need to do for now is just install all libraries:
 
 ```bash
 npm install
