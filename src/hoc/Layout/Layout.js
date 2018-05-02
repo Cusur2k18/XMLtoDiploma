@@ -7,7 +7,7 @@ export default class Layout extends Component {
   render() {
     return (
       <Aux>
-        <Navbar title="App" />
+        <Navbar cssClass="container-fluid app-navbar text-center"/>
         {this.props.children}
       </Aux>
     )

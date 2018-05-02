@@ -1,9 +1,11 @@
 import React from 'react'
-import AppBar from 'material-ui/AppBar';
+
+import './Navbar.css';
 
 export default (props) => {
   return (
-    <AppBar title={props.title}>
-    </AppBar>
+    <div className={props.cssClass}>
+      <img src="https://lh5.googleusercontent.com/U8-735pXqIep_DRPKnPfe4JQ-gT3naSXsiHqisPv3vBjlAqxwh9LWgy_OgytVaX13MU79yIrxQ=w887" alt="App" width="250" height="90"/>
+    </div>
   )
 }

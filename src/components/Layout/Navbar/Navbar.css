@@ -1,0 +1,17 @@
+/* 
+ * Note: We use !important in order to replace the inline style given by Material UI
+ * for further understanding see: https://www.material-ui.com/#/customization/styles
+ */
+
+.app-navbar {
+  background-color: #711b2b;
+  width: 100%;
+  height: auto;
+  padding: 10px 0;
+  color: #ffffff;
+  box-shadow: 1px 3px 1px #611725;
+}
+
+.app-navbar h1 {
+  margin: 0 auto;
+}

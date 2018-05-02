@@ -4,13 +4,11 @@ import './index.css';
 import App from './App';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 
 import registerServiceWorker from './registerServiceWorker';
 
 ReactDOM.render(
-  <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
+  <MuiThemeProvider>
     <App />
   </MuiThemeProvider>, 
   document.getElementById('root'));
