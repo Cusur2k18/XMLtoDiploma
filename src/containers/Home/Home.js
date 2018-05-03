@@ -14,6 +14,7 @@ import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
 
 import VerticalStepper from '../../components/UI/VerticalStepper/VerticalStepper';
+import Diploma from '../../components/UI/Diploma/Diploma';
 
 export default class Home extends Component {
   state = {
@@ -104,7 +105,7 @@ export default class Home extends Component {
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-xs-12 col-sm-12 col-md-12 col-lg-7 mt-5">
-            <Card>
+            {/* <Card>
               <CardHeader
                 title="Obten tu constancia"
                 subtitle="Porfavor sigue los pasos para obtener tu constancia"
@@ -157,7 +158,8 @@ export default class Home extends Component {
                   </VerticalStepper>
                 </div>
               </CardText>
-            </Card>
+            </Card> */}
+            <Diploma name="Mariscal Sandoval Christa Estefania"/>
           </div>
         </div>
       </div>
