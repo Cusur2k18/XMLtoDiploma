@@ -2,7 +2,6 @@ import * as actionTypes from '../actions/action-types';
 
 const initialState = {
   user: null,
-  enrolledUsers: [],
   events: [],
   error: null,
   loading: false
@@ -23,12 +22,10 @@ const reducer = (state = initialState, action) => {
         error: null,
         loading: false
       }
-    case actionTypes.SET_USERS:
+    case actionTypes.SET_USER:
       return {
         ...state,
-        enrolledUsers: [...action.users],
-        error: null,
-        loading: false
+        user: {...action.user}
       }
     default:
       return state;

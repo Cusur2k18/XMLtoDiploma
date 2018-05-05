@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import * as homeActions from '../../store/actions';
+import checkvalidity from '../../utils/validation';
 
 import {Card, CardHeader, CardText} from 'material-ui/Card';
 import {
@@ -10,7 +11,6 @@ import {
   StepContent,
 } from 'material-ui/Stepper';
 import SelectField from 'material-ui/SelectField';
-import AutoComplete from 'material-ui/AutoComplete';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
@@ -21,18 +21,25 @@ import Diploma from '../../components/UI/Diploma/Diploma';
 
 class Home extends Component {
   state = {
-    userInfo: {
-      eventName: 'Congreso Veterinario del Sur 2018',
-      userName: null
-    },
     finished: false,
     stepIndex: 0,
-    users: [
-      { id: '1', name: 'Jaunito 1' },
-      { id: '2', name: 'Jaunito 2' },
-      { id: '3', name: 'Jaunito 3' },
-      { id: '4', name: 'Jaunito 4' }
-    ]
+    form: {
+      user: {
+        props: {
+          id: null,
+          name: ''
+        },
+        validation: { required: true }
+      },
+      event: {
+        props: {
+          id: null,
+          name: '',
+          users: []
+        },
+        validation: { required: true }
+      }
+    }
   }
 
 
@@ -60,9 +67,17 @@ class Home extends Component {
     }
   };
 
+  createPdf = () => {
+    console.log('state', this.state);
+  }
+
   renderStepActions(step) {
     const {stepIndex} = this.state;
-
+    const action = stepIndex === 2 ? this.createPdf : this.handleNextStep
+    let valid = checkvalidity(this.state.form.event.props.name, this.state.form.event.validation)
+    if (stepIndex === 1) {
+      valid = checkvalidity(this.state.form.user.props.name, this.state.form.user.validation)
+    }
     return (
       <div style={{margin: '12px 0'}}>
         <RaisedButton
@@ -71,7 +86,8 @@ class Home extends Component {
           disableFocusRipple={true}
           labelPosition="before"
           primary={true}
-          onClick={this.handleNextStep}
+          disabled={!valid}
+          onClick={action}
           style={{marginRight: 12}}
           icon={stepIndex === 2 ? <FontIcon className="fas fa-download" /> : null}
         />
@@ -88,28 +104,62 @@ class Home extends Component {
     );
   }
 
-  selectUserhandler = (e) => {
-    console.log(e.target.value);
+  selectUserhandler = (evt, index, value) => {
+    const selectedUser = {...this.state.form.event.props.users.find( u => u.id === value)};
+    this.props.onSetUser(selectedUser);
+    this.setState({ 
+      ...this.state,
+      form: {
+        ...this.state.form,
+        user: {
+          ...this.state.form.event,
+          props: {
+            id: selectedUser.id,
+            name: selectedUser.name + ' ' + selectedUser.lastname
+          }
+        }
+      }
+    })
   }
 
-  selectEventHandler = (e) => {
-    console.log(e.target.value);
+  selectEventHandler = (evt, index, value) => {
+    const selectedEvent = this.props.events.find( e => e.id === value);
+
+    if (selectedEvent) {
+      this.setState({ 
+        ...this.state,
+        form: {
+          ...this.state.form,
+          event: {
+            ...this.state.form.event,
+            props: {
+              id: selectedEvent.id,
+              name: selectedEvent.name,
+              users: [...selectedEvent.users]
+            }
+          }
+        }
+      })
+    }
   }
 
   resetValues = () => {
     this.setState({
       ...this.state,
-      userInfo: {
-        eventName: 'Congreso Veterinario del Sur 2018',
-        userName: null
-      },
       finished: false,
       stepIndex: 0,
     })
   }
 
   render() {
-    let enrolledUsers = this.state.users.map( user => user.name);
+    const events = this.props.events.map( event => {
+      return <MenuItem key={event.id} value={`${event.id}`} primaryText={event.name} />
+    })
+
+    const enrolledUsers = this.state.form.event.props.id ?
+    this.props.events.find( e => e.id === this.state.form.event.props.id)
+      .users.map( u => <MenuItem key={u.id} value={`${u.id}`} primaryText={`${u.name} ${u.lastname}`} />) : [];
+
     return (
       <div className="container">
         <div className="row justify-content-center">
@@ -120,18 +170,18 @@ class Home extends Component {
                 subtitle="Porfavor sigue los pasos para obtener tu constancia"
               />
               <CardText>
-                <div className="">
+                <div>
                   <VerticalStepper stepIndex={this.state.stepIndex} finished={this.state.finished} onReset={this.resetValues}>
 
                     <Step>
                       <StepLabel>Selecciona el evento al que asististe:</StepLabel>
                       <StepContent>
                         <div className="col-xs-12 col-lg-12">
-                        <SelectField floatingLabelText="Evento"
-                            value={this.state.userInfo.eventName}
-                            onChange={this.selectEventHandler}
-                            style={{"width": "100%"}}>
-                            <MenuItem value={this.state.userInfo.eventName} primaryText={this.state.userInfo.eventName} />
+                        <SelectField floatingLabelText="Selecciona el evento"
+                          value={this.state.form.event.props.id}
+                          onChange={this.selectEventHandler}
+                          style={{"width": "100%"}}>
+                          {events}
                         </SelectField>
                         </div>
                         {this.renderStepActions(0)}
@@ -142,12 +192,12 @@ class Home extends Component {
                       <StepLabel>Busca tu nombre en la siguiente lista</StepLabel>
                       <StepContent>
                         <div className="col-xs-12 col-lg-12">
-                        <AutoComplete
-                            floatingLabelText="Escribe tu nombre"
-                            filter={AutoComplete.fuzzyFilter}
-                            dataSource={enrolledUsers}
-                            maxSearchResults={10}
-                          />
+                        <SelectField floatingLabelText="Encuentra tu nombre en la lista"
+                          value={this.state.form.user.props.id}
+                          onChange={this.selectUserhandler}
+                          style={{"width": "100%"}}>
+                          {enrolledUsers}
+                        </SelectField>
                         </div>
                         {this.renderStepActions(1)}
                       </StepContent>
@@ -157,7 +207,7 @@ class Home extends Component {
                       <StepLabel>Listo!</StepLabel>
                       <StepContent>
                         <p>
-                          Todo esta perfecto! Solo da click en el boton de abajo y tendras tu constancia
+                          Solo da click en el boton de abajo y tendras tu constancia
                           en PDF.
                           <br/><b>Gracias por asistir!</b>
                         </p>
@@ -176,16 +226,17 @@ class Home extends Component {
   }
 }
 const mapStateToProps = (state) => ({
-  enrolledUsers: state.users,
   events: state.events,
   user: state.user,
   error: state.error,
-  loading: state.loading
+  loading: state.loading,
+  eventId: state.eventId
 })
 
 const mapDispatchToProps = dispatch => {
   return {
-    onInit: () => dispatch(homeActions.initData())
+    onInit: () => dispatch(homeActions.initData()),
+    onSetUser: (user) => dispatch(homeActions.setUser(user))
   }
 }
 

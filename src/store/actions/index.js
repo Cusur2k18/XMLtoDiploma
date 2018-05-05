@@ -1,5 +1,4 @@
 export {
   initData,
-  setEvents,
-  setUsers
+  setUser
 } from './home';
