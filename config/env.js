@@ -77,6 +77,10 @@ function getClientEnvironment(publicUrl) {
         // This should only be used as an escape hatch. Normally you would put
         // images into the `src` and `import` them in code to get their paths.
         PUBLIC_URL: publicUrl,
+
+        // Firebase Credentials
+        FIREBASE_URL: process.env.FIREBASE_URL || 'not-set',
+        FIREBASE_KEY: process.env.FIREBASE_KEY || 'not-set'
       }
     );
   // Stringify all values so we can feed into Webpack DefinePlugin

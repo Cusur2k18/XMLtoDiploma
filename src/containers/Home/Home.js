@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
+import * as homeActions from '../../store/actions';
 
 import {Card, CardHeader, CardText} from 'material-ui/Card';
 import {
@@ -16,7 +19,7 @@ import FontIcon from 'material-ui/FontIcon';
 import VerticalStepper from '../../components/UI/VerticalStepper/VerticalStepper';
 import Diploma from '../../components/UI/Diploma/Diploma';
 
-export default class Home extends Component {
+class Home extends Component {
   state = {
     userInfo: {
       eventName: 'Congreso Veterinario del Sur 2018',
@@ -31,6 +34,12 @@ export default class Home extends Component {
       { id: '4', name: 'Jaunito 4' }
     ]
   }
+
+
+  componentDidMount = () => {
+    this.props.onInit();
+  }
+  
 
   handleNextStep = () => {
     const {stepIndex} = this.state;
@@ -105,7 +114,7 @@ export default class Home extends Component {
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-xs-12 col-sm-12 col-md-12 col-lg-7 mt-5">
-            {/* <Card>
+            <Card>
               <CardHeader
                 title="Obten tu constancia"
                 subtitle="Porfavor sigue los pasos para obtener tu constancia"
@@ -120,7 +129,8 @@ export default class Home extends Component {
                         <div className="col-xs-12 col-lg-12">
                         <SelectField floatingLabelText="Evento"
                             value={this.state.userInfo.eventName}
-                            onChange={this.selectEventHandler}>
+                            onChange={this.selectEventHandler}
+                            style={{"width": "100%"}}>
                             <MenuItem value={this.state.userInfo.eventName} primaryText={this.state.userInfo.eventName} />
                         </SelectField>
                         </div>
@@ -158,11 +168,25 @@ export default class Home extends Component {
                   </VerticalStepper>
                 </div>
               </CardText>
-            </Card> */}
-            <Diploma name="Mariscal Sandoval Christa Estefania"/>
+            </Card>
           </div>
         </div>
       </div>
     )
   }
 }
+const mapStateToProps = (state) => ({
+  enrolledUsers: state.users,
+  events: state.events,
+  user: state.user,
+  error: state.error,
+  loading: state.loading
+})
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onInit: () => dispatch(homeActions.initData())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home)

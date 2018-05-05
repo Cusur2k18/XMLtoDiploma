@@ -1,0 +1,58 @@
+{
+  "events": [
+    {
+      "id": "CVCusur2018",
+      "name": "Congreso Veterinario del Sur 2018",
+      "users": [
+        { 
+          "name": "Elma",
+          "lastname": "Canon Moreno"
+        },
+        { 
+          "name": "Armando",
+          "lastname": "L. Slam"
+        },
+        { 
+          "name": "Apolo",
+          "lastname": "Contreras A. Wilson"
+        },
+        { 
+          "name": "Armando",
+          "lastname": "Pulido de Cabeza"
+        },
+        { 
+          "name": "Mayte",
+          "lastname": "Benitez A. Juarez"
+        },
+        { 
+          "name": "Moctezumo",
+          "lastname": "Cacana I. Pepilsin"
+        },
+        { 
+          "name": "Elza",
+          "lastname": "Cabaña Blanco"
+        },
+        { 
+          "name": "Casimiro",
+          "lastname": "Bello Cejudo"
+        },
+        { 
+          "name": "Aquiles",
+          "lastname": "Aprieto Durero"
+        },
+        { 
+          "name": "Fransico",
+          "lastname": "Zepeda D. Hidalgo"
+        },
+        { 
+          "name": "Mohame",
+          "lastname": "de la Bella I. Haguado"
+        },
+        { 
+          "name": "Alma Marcela",
+          "lastname": "Silva de Alegre"
+        }
+      ]
+    }
+  ]
+}
