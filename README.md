@@ -56,7 +56,7 @@ In order to have everything working you'll need to have an already defined schem
 }
 ```
 
-The application is ment to work with __ONLY__ this data structure. Feel free to fork it and 
+The application is meant to work with __ONLY__ this data structure. Feel free to fork it and 
 making it bigger.
 
 This repo already contains a json file with some fake data under `config/database.local.json`.
