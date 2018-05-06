@@ -1,6 +1,7 @@
 # XML to Diploma
 
 ## Installation
+------
 
 First clone the project
 
@@ -26,8 +27,51 @@ and then just run:
 npm start
 ```
 
-## TODO
+## BASIC SETUP
+------
 
-- Add a way to read a xml file from the cloud to populate some parts of the state
+> This app uses [Firebase](https://firebase.google.com/) as a BaaS platform. You'll need to have a firebase app running
+> to be able to use this app.
 
-- Generate a PDF from the client with the real data
+In order to have everything working you'll need to have an already defined schema (db) that looks like: 
+
+```javascript
+{
+  "events": [
+    {
+      "id": "<SomeID>",
+      "name": "<NiceName>",
+      "users": [
+        { 
+          "id": "<userId>",
+          "name": "<userName>",
+          "lastname": "<userLastName>"
+        },
+        .
+        .
+        .
+      ]
+    }
+  ]
+}
+```
+
+The application is ment to work with __ONLY__ this data structure. Feel free to fork it and 
+making it bigger.
+
+This repo already contains a json file with some fake data under `config/database.local.json`.
+
+You can use that data to create a basic db on __Firebase__.
+
+First you have to create a `.env` file with the following:
+
+```
+FIREBASE_URL=<YOU_FIREBASE_URL>
+```
+
+after that you can just run the app and should be working.
+
+## Deploy
+------
+
+Coming Soon....
