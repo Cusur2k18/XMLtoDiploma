@@ -7,7 +7,9 @@ class App extends Component {
   render() {
     return (
       <Layout>
-        <Home />
+        <div className="shadowed-navbar">
+          <Home />
+        </div>
       </Layout>
     );
   }

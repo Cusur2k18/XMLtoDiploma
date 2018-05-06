@@ -207,7 +207,7 @@ class Home extends Component {
 
     return (
       <div className="container">
-        <div className="row justify-content-center">
+        <div className="row justify-content-center mt-5">
           <div className="col-xs-12 col-sm-12 col-md-12 col-lg-7 mt-5">
             <Card>
               <CardHeader
