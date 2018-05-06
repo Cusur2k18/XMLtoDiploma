@@ -6,7 +6,7 @@ export default () => {
   return (
     <div className="footer">
       <div className="row">
-        <div class="col align-self-start"></div>
+        <div className="col align-self-start"></div>
         <div className="col align-self-center text-center">
           <p>Centro Universitario Del Sur &reg;</p>
         </div>
