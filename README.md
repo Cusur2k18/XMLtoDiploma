@@ -126,3 +126,6 @@ Just go to that file, copy all and use the [Babel REPL](https://babeljs.io/repl/
 Due to the problems of the production build, will be better if we could ship the canvg library but pre compiled. This repo will contain that simple logic
 
 ##### [Canvg pre-compiled](https://github.com/CrystalStream/canvg)
+
+
+We also need to make some improvments to the app, like not rendering the svg react component, instead just put some text in the images with canvas. See: [Insert text into images with canvas](https://stackoverflow.com/questions/41116851/how-to-add-text-on-image-using-javascript-and-canvas)
