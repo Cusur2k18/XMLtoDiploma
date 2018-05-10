@@ -254,7 +254,9 @@ class Home extends Component {
                         <p>
                           Solo da click en el boton de abajo y tendras tu constancia
                           en PDF.
-                          <br/><b>Gracias por asistir!</b>
+                          <br/>
+                          <br/>
+                          <small className="d-block d-sm-block d-md-none"><b>*(Ese proceso puede tardar un poco y se recomienda estar conectado a una red WiFi)</b></small>
                         </p>
                         {this.renderStepActions(2)}
                       </StepContent>

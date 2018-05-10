@@ -14,7 +14,7 @@ import registerServiceWorker from './registerServiceWorker';
 
 const composeEnhancers = process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose;
 
-const store = createStore(homeReducer, composeEnhancers(applyMiddleware(thunk)))
+const store = createStore(homeReducer, composeEnhancers(applyMiddleware(thunk)));
 
 ReactDOM.render(
   <Provider store={store}>

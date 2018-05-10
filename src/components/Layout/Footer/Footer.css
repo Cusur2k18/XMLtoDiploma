@@ -2,7 +2,7 @@
   background: #061F29;
   font-size: 22px;
   position: absolute;
-  bottom: 0;
+  bottom: -10px;
   left: 0;
   right: 0;
   padding: 1rem 2rem;
@@ -10,6 +10,7 @@
 
 .footer ul {
   list-style: none;
+  padding: 0;
 }
 
 .footer p {
@@ -23,4 +24,25 @@
 }
 .footer ul a:hover {
   color: #F5F0F4;
+}
+
+.footer .footer-description {
+  font-size: 13px;
+  color: #eeeeee;
+  font-weight: 300;
+}
+
+.footer .footer-description li {
+  padding-top: 10px;
+}
+
+.footer .footer-description .for-sm-sc {
+  font-size: 10px;
+  padding-top: 2px;
+}
+
+@media only screen and (max-width: 500px) {
+  .footer {
+    display: none;
+  }
 }
