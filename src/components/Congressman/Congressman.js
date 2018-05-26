@@ -17,7 +17,7 @@ import VerticalStepper from '../../components/UI/VerticalStepper/VerticalStepper
 
 export default (props) => {
 
-   /**
+  /**
   * @description We render the different action buttons depending on the step.
   * @param{string} step Current step on the stepper.
   */
@@ -64,7 +64,7 @@ export default (props) => {
     .users.map( u => <MenuItem key={u.id} value={`${u.id}`} primaryText={`${u.name} ${u.lastname}`} />) : [];
 
   return (
-    <div>
+    <div style={{ marginTop: '20px' }}>
       <VerticalStepper stepIndex={props.stepIndex} finished={props.finished}>
 
         <Step>

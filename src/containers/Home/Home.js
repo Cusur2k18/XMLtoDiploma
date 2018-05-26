@@ -11,6 +11,7 @@ import { Tabs, Tab } from 'material-ui/Tabs';
 
 import Diploma from '../../components/UI/Diploma/Diploma';
 import Congressman from '../../components/Congressman/Congressman';
+import Attendees from '../../components/Attendees/Attendees';
 
 
 class Home extends Component {
@@ -33,7 +34,8 @@ class Home extends Component {
         },
         validation: { required: true }
       }
-    }
+    },
+    userCode: null
   }
 
 
@@ -105,8 +107,6 @@ class Home extends Component {
   }
 
   selectEventHandler = (evt, index, value) => {
-    console.log('index', index);
-    console.log('value', value);
     const selectedEvent = this.props.events.find( e => e.id === value);
 
     if (selectedEvent) {
@@ -131,6 +131,7 @@ class Home extends Component {
     this.setState({
       finished: false,
       stepIndex: 0,
+      userCode: null,
       form: {
         user: {
           props: {
@@ -152,6 +153,10 @@ class Home extends Component {
     this.props.onSetUser(null);
   }
 
+  setUserCode = (evt, value) => {
+    this.setState({ ...this.state, userCode: value})
+  }
+
   render() {
 
     return (
@@ -164,9 +169,22 @@ class Home extends Component {
                 subtitle="Porfavor sigue los pasos para obtener tu constancia"
               />
               <CardText>
-                <Tabs>
+                <Tabs tabItemContainerStyle={{ backgroundColor: '#28A0D1' }} inkBarStyle={{ backgroundColor: '#103E51'}} onChange={this.resetValues}>
 
-                  <Tab label="Item One" >
+                  <Tab label="Congresista" >
+                    <Attendees 
+                      userCode={this.state.userCode}
+                      stepIndex={this.state.stepIndex}
+                      onCreatePdf={this.createPdf}
+                      onHandleNextStep={this.handleNextStep}
+                      handlePrevStep={this.handlePrevStep}
+                      finished={this.state.finished}
+                      onChangeUserCode={this.setUserCode}
+                      onResetValues={this.resetValues}
+                    />
+                  </Tab>
+
+                  <Tab label="Asistencia a taller" >
                     <Congressman 
                       events={this.props.events}
                       eventId={this.state.form.event.props.id}
@@ -180,14 +198,6 @@ class Home extends Component {
                       onResetValues={this.resetValues}
                       selectedEvent={this.state.form.event}
                       selectedUser={this.state.form.user}/>
-                  </Tab>
-
-                  <Tab label="Item Two" >
-                    <div>
-                      <h2 >Tab TWO</h2>
-                      <p>This is an example tab.</p>
-                      <p>OTHER</p>
-                    </div>
                   </Tab>
                 </Tabs>
               </CardText>
