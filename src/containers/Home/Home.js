@@ -3,24 +3,14 @@ import ReactDOMServer from 'react-dom/server';
 import { connect } from 'react-redux';
 
 import * as homeActions from '../../store/actions';
-import checkvalidity from '../../utils/validation';
 import * as jsPDF from 'jspdf'
 import * as canvg from 'canvg/canvg';
 
 import { Card, CardHeader, CardText } from 'material-ui/Card';
-import {
-  Step,
-  StepLabel,
-  StepContent,
-} from 'material-ui/Stepper';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import RaisedButton from 'material-ui/RaisedButton';
-import FlatButton from 'material-ui/FlatButton';
-import FontIcon from 'material-ui/FontIcon';
+import { Tabs, Tab } from 'material-ui/Tabs';
 
-import VerticalStepper from '../../components/UI/VerticalStepper/VerticalStepper';
 import Diploma from '../../components/UI/Diploma/Diploma';
+import Congressman from '../../components/Congressman/Congressman';
 
 
 class Home extends Component {
@@ -95,43 +85,7 @@ class Home extends Component {
     });
   }
 
-  /**
-  * @description We render the different action buttons depending on the step.
-  * @param{string} step Current step on the stepper.
-  */
-  renderStepActions(step) {
-    const {stepIndex} = this.state;
-    const action = stepIndex === 2 ? this.createPdf : this.handleNextStep
-    let valid = checkvalidity(this.state.form.event.props.name, this.state.form.event.validation)
-    if (stepIndex === 1) {
-      valid = checkvalidity(this.state.form.user.props.name, this.state.form.user.validation)
-    }
-    return (
-      <div style={{margin: '12px 0'}}>
-        <RaisedButton
-          label={stepIndex === 2 ? 'Descargar pdf' : 'Siguiente'}
-          disableTouchRipple={true}
-          disableFocusRipple={true}
-          labelPosition="before"
-          primary={true}
-          disabled={!valid}
-          onClick={action}
-          style={{marginRight: 12}}
-          icon={stepIndex === 2 ? <FontIcon className="fas fa-download" /> : null}
-        />
-        {step > 0 && (
-          <FlatButton
-            label="Regresar"
-            disabled={stepIndex === 0}
-            disableTouchRipple={true}
-            disableFocusRipple={true}
-            onClick={this.handlePrevStep}
-          />
-        )}
-      </div>
-    );
-  }
-
+ 
   selectUserhandler = (evt, index, value) => {
     const selectedUser = {...this.state.form.event.props.users.find( u => u.id === value)};
     this.props.onSetUser(selectedUser);
@@ -151,6 +105,8 @@ class Home extends Component {
   }
 
   selectEventHandler = (evt, index, value) => {
+    console.log('index', index);
+    console.log('value', value);
     const selectedEvent = this.props.events.find( e => e.id === value);
 
     if (selectedEvent) {
@@ -197,13 +153,6 @@ class Home extends Component {
   }
 
   render() {
-    const events = this.props.events.map( event => {
-      return <MenuItem key={event.id} value={`${event.id}`} primaryText={event.name} />
-    })
-
-    const enrolledUsers = this.state.form.event.props.id ?
-    this.props.events.find( e => e.id === this.state.form.event.props.id)
-      .users.map( u => <MenuItem key={u.id} value={`${u.id}`} primaryText={`${u.name} ${u.lastname}`} />) : [];
 
     return (
       <div className="container">
@@ -215,58 +164,32 @@ class Home extends Component {
                 subtitle="Porfavor sigue los pasos para obtener tu constancia"
               />
               <CardText>
-                <div>
-                  <VerticalStepper stepIndex={this.state.stepIndex} finished={this.state.finished}>
+                <Tabs>
 
-                    <Step>
-                      <StepLabel>Selecciona el evento al que asististe:</StepLabel>
-                      <StepContent>
-                        <div className="col-xs-12 col-lg-12">
-                        <SelectField floatingLabelText="Selecciona el evento"
-                          value={this.state.form.event.props.id}
-                          onChange={this.selectEventHandler}
-                          style={{"width": "100%"}}>
-                          {events}
-                        </SelectField>
-                        </div>
-                        {this.renderStepActions(0)}
-                      </StepContent>
-                    </Step>
+                  <Tab label="Item One" >
+                    <Congressman 
+                      events={this.props.events}
+                      eventId={this.state.form.event.props.id}
+                      stepIndex={this.state.stepIndex}
+                      finished={this.state.finished}
+                      onCreatePdf={this.createPdf}
+                      onHandleNextStep={this.handleNextStep}
+                      handlePrevStep={this.handlePrevStep}
+                      onSelectEvent={this.selectEventHandler}
+                      onSelectUser={this.selectUserhandler}
+                      onResetValues={this.resetValues}
+                      selectedEvent={this.state.form.event}
+                      selectedUser={this.state.form.user}/>
+                  </Tab>
 
-                    <Step>
-                      <StepLabel>Busca tu nombre en la siguiente lista</StepLabel>
-                      <StepContent>
-                        <div className="col-xs-12 col-lg-12">
-                        <SelectField floatingLabelText="Encuentra tu nombre en la lista"
-                          value={this.state.form.user.props.id}
-                          onChange={this.selectUserhandler}
-                          style={{"width": "100%"}}>
-                          {enrolledUsers}
-                        </SelectField>
-                        </div>
-                        {this.renderStepActions(1)}
-                      </StepContent>
-                    </Step>
-
-                    <Step>
-                      <StepLabel>Listo!</StepLabel>
-                      <StepContent>
-                        <p>
-                          Solo da click en el boton de abajo y tendras tu constancia
-                          en PDF.
-                          <br/>
-                          <br/>
-                          <small className="d-block d-sm-block d-md-none"><b>*(Ese proceso puede tardar un poco y se recomienda estar conectado a una red WiFi)</b></small>
-                        </p>
-                        {this.renderStepActions(2)}
-                      </StepContent>
-                    </Step>
-                  </VerticalStepper>
-                  {this.state.finished && (<div style={{ margin: "20px 0", textAlign: "center"}}>
-                    <h2>Gracias por asistir!</h2>
-                    <FlatButton label="Descargar otr a contancia" fullWidth onClick={this.resetValues}/>
-                  </div>)}
-                </div>
+                  <Tab label="Item Two" >
+                    <div>
+                      <h2 >Tab TWO</h2>
+                      <p>This is an example tab.</p>
+                      <p>OTHER</p>
+                    </div>
+                  </Tab>
+                </Tabs>
               </CardText>
             </Card>
           </div>
