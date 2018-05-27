@@ -8,6 +8,8 @@ import * as canvg from 'canvg/canvg';
 
 import { Card, CardHeader, CardText } from 'material-ui/Card';
 import { Tabs, Tab } from 'material-ui/Tabs';
+import Dialog from 'material-ui/Dialog';
+import RaisedButton from 'material-ui/RaisedButton';
 
 import Diploma from '../../components/UI/Diploma/Diploma';
 import Congressman from '../../components/Congressman/Congressman';
@@ -18,6 +20,8 @@ class Home extends Component {
   state = {
     finished: false,
     stepIndex: 0,
+    userCode: '',
+    error: '',
     form: {
       user: {
         props: {
@@ -34,8 +38,7 @@ class Home extends Component {
         },
         validation: { required: true }
       }
-    },
-    userCode: null
+    }
   }
 
 
@@ -45,20 +48,13 @@ class Home extends Component {
   
   handleNextStep = () => {
     const {stepIndex} = this.state;
-    this.setState({
-      ...this.state,
-      stepIndex: stepIndex + 1,
-      finished: stepIndex >= 2,
-    });
+    this.setState({ stepIndex: stepIndex + 1, finished: stepIndex >= 2 });
   };
 
   handlePrevStep = () => {
     const {stepIndex} = this.state;
     if (stepIndex > 0) {
-      this.setState({
-        ...this.state, 
-        stepIndex: stepIndex - 1
-      });
+      this.setState({ stepIndex: stepIndex - 1 });
     }
   };
 
@@ -72,27 +68,28 @@ class Home extends Component {
   */
   createPdf = () => {
     const {stepIndex} = this.state;
-    let canvas = document.createElement('canvas');
-    canvg(canvas, ReactDOMServer.renderToStaticMarkup(<Diploma name={this.state.form.user.props.name} />), {});
-    let imgData = canvas.toDataURL('image/png'), 
-        doc = new jsPDF('l', 'pt', 'a4'),
-        filename = `Contancia - ${this.state.form.user.props.name.replace(/[\. ,:-]+/g, '-')}`;
+    let canvas = document.createElement('canvas'),
+        diplomaUser = this.state.form.event.props.users.find( u => u.id === this.state.userCode);
+  
+    if (diplomaUser) {
+      canvg(canvas, ReactDOMServer.renderToStaticMarkup(<Diploma name={diplomaUser.name} />), {});
+      let imgData = canvas.toDataURL('image/png'), 
+          doc = new jsPDF('l', 'pt', 'a4'),
+          filename = `Contancia - ${diplomaUser.name.replace(/[\. ,:-]+/g, '-')}`;
 
-    doc.addImage(imgData, 'PNG', 0, 0, canvas.width * .53, canvas.height * .49);
-    doc.save(filename);
-    this.setState({
-      ...this.state,
-      stepIndex: stepIndex + 1,
-      finished: true
-    });
+      doc.addImage(imgData, 'PNG', 0, 0, canvas.width * .53, canvas.height * .49);
+      doc.save(filename);
+      this.setState({ stepIndex: stepIndex + 1, finished: true });
+    } else {
+      const errorText = `El codigo no aparece en los registros del evento! Porfavor intenta de nuevo`;
+      this.setState({ error: errorText })
+    }
   }
-
  
   selectUserhandler = (evt, index, value) => {
     const selectedUser = {...this.state.form.event.props.users.find( u => u.id === value)};
     this.props.onSetUser(selectedUser);
     this.setState({ 
-      ...this.state,
       form: {
         ...this.state.form,
         user: {
@@ -111,7 +108,6 @@ class Home extends Component {
 
     if (selectedEvent) {
       this.setState({ 
-        ...this.state,
         form: {
           ...this.state.form,
           event: {
@@ -131,7 +127,8 @@ class Home extends Component {
     this.setState({
       finished: false,
       stepIndex: 0,
-      userCode: null,
+      userCode: '',
+      error: '',
       form: {
         user: {
           props: {
@@ -154,10 +151,33 @@ class Home extends Component {
   }
 
   setUserCode = (evt, value) => {
-    this.setState({ ...this.state, userCode: value})
+    this.setState({ 
+      userCode: value,
+      form: {
+        ...this.state.form,
+        event: {
+          ...this.state.form.event,
+          props: {
+            ...this.state.form.event.props,
+            id: this.props.events[0].id,
+            name: this.props.events[0].name,
+            users: [
+              ...this.props.events[0].users
+            ]
+          }
+        }
+      }
+    })
   }
 
   render() {
+    const modalActions = [
+      <RaisedButton
+        label="Intentar de nuevo"
+        secondary={true}
+        onClick={this.resetValues}
+      />
+    ];
 
     return (
       <div className="container">
@@ -202,6 +222,14 @@ class Home extends Component {
                 </Tabs>
               </CardText>
             </Card>
+            <Dialog 
+              modal={false}
+              open={!!this.state.error}
+              actions={modalActions}
+              onRequestClose={this.resetValues}
+            >
+            {this.state.error}
+            </Dialog>
           </div>
         </div>
       </div>
