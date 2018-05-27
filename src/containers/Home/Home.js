@@ -27,6 +27,7 @@ class Home extends Component {
         props: {
           id: '',
           name: '',
+          diplomaUrl: '',
           users: []
         },
         validation: { required: true }
@@ -53,11 +54,7 @@ class Home extends Component {
 
 
   /**
-  * @description This method create a pdf of a React Component
-  *     1.- Create a canvas element so we can put our react component in there
-  *     2.- Using canvg we create a canvas based on a svg that's why we call 'renderToStaticMarkup'
-  *     3.- Get data url of the canvas
-  *     4.- Render the canvas with jsPDF
+  * @description TODO
   */
   createPdf = () => {
     const {stepIndex, userType} = this.state;
@@ -69,14 +66,14 @@ class Home extends Component {
     }
   
     if (diplomaUser) {
-      // canvg(canvas, <img src="https://res.cloudinary.com/demo/image/upload/w_500/l_text:Arial_80:Flowers/flowers.jpg" alt="diploma"/>, {});
       let doc = new jsPDF('l', 'pt', 'a4'),
           filename = `Contancia - ${diplomaUser.name.replace(/[\. ,:-]+/g, '-')}`,
           realImage = '';
-          
-      this.getDataUri('https://res.cloudinary.com/demo/image/upload/w_500/l_text:Arial_80:Flowers/flowers.jpg', 500, 500, (dataUri) => {
+
+          //'https://res.cloudinary.com/demo/image/upload/w_500/l_text:Arial_80:Flowers/flowers.jpg'
+      this.getDataUri(APP_CONSTANTS.DEFAULT_DIPLOMA_URL, 1000, 1000, (dataUri, cw, ch) => {
         realImage = dataUri;
-        doc.addImage(realImage, 'PNG', 15, 40, 180, 160);
+        doc.addImage(realImage, 'PNG', 0, 0, 850, 600);
         doc.save(filename);
         this.setState({ stepIndex: stepIndex + 1, finished: true });
       })
@@ -103,6 +100,7 @@ class Home extends Component {
             props: {
               id: selectedEvent.id,
               name: selectedEvent.name,
+              diplomaUrl: selectedEvent.diploma_url,
               users: [...selectedEvent.users]
             }
           }
@@ -168,7 +166,7 @@ class Home extends Component {
       canvas.width = width;
       canvas.height = height;
 
-      canvas.getContext('2d').drawImage(this, 0, 0);
+      canvas.getContext('2d').drawImage(this, 0, 0, width, height);
 
       callback(canvas.toDataURL('image/png'));
     }
