@@ -23,16 +23,9 @@ class Home extends Component {
     userCode: '',
     error: '',
     form: {
-      user: {
-        props: {
-          id: null,
-          name: ''
-        },
-        validation: { required: true }
-      },
       event: {
         props: {
-          id: null,
+          id: '',
           name: '',
           users: []
         },
@@ -86,21 +79,8 @@ class Home extends Component {
     }
   }
  
-  selectUserhandler = (evt, index, value) => {
-    const selectedUser = {...this.state.form.event.props.users.find( u => u.id === value)};
-    this.props.onSetUser(selectedUser);
-    this.setState({ 
-      form: {
-        ...this.state.form,
-        user: {
-          ...this.state.form.event,
-          props: {
-            id: selectedUser.id,
-            name: selectedUser.name + ' ' + selectedUser.lastname
-          }
-        }
-      }
-    })
+  selectUserhandler = (evt, value) => {
+    this.setState({ userCode: value })
   }
 
   selectEventHandler = (evt, index, value) => {
@@ -132,14 +112,14 @@ class Home extends Component {
       form: {
         user: {
           props: {
-            id: null,
+            id: '',
             name: ''
           },
           validation: { required: true }
         },
         event: {
           props: {
-            id: null,
+            id: '',
             name: '',
             users: []
           },
@@ -217,7 +197,8 @@ class Home extends Component {
                       onSelectUser={this.selectUserhandler}
                       onResetValues={this.resetValues}
                       selectedEvent={this.state.form.event}
-                      selectedUser={this.state.form.user}/>
+                      userCode={this.state.userCode}
+                      userValidation={{ required: true }}/>
                   </Tab>
                 </Tabs>
               </CardText>

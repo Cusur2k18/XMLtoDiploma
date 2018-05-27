@@ -57,7 +57,8 @@ export default (props) => {
             <TextField floatingLabelText="Codigo"
               value={props.userCode}
               onChange={props.onChangeUserCode}
-              style={{"width": "100%"}} />
+              style={{"width": "100%"}} 
+            />
             </div>
             {onRenderStepActions(0)}
           </StepContent>

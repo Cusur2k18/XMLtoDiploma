@@ -8,6 +8,7 @@ import {
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
+import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
@@ -26,7 +27,7 @@ export default (props) => {
 
     let valid = checkvalidity(props.selectedEvent.props.name, props.selectedEvent.validation)
     if (props.stepIndex === 1) {
-      valid = checkvalidity(props.selectedUser.props.name, props.selectedUser.validation)
+      valid = checkvalidity(props.userCode, props.userValidation)
     }
 
     return (
@@ -58,11 +59,7 @@ export default (props) => {
   const events = props.events.map( event => {
     return <MenuItem key={event.id} value={`${event.id}`} primaryText={event.name} />
   })
-
-  const enrolledUsers = props.eventId ?
-  props.events.find( e => e.id === props.eventId)
-    .users.map( u => <MenuItem key={u.id} value={`${u.id}`} primaryText={`${u.name} ${u.lastname}`} />) : [];
-
+  
   return (
     <div style={{ marginTop: '20px' }}>
       <VerticalStepper stepIndex={props.stepIndex} finished={props.finished}>
@@ -83,15 +80,15 @@ export default (props) => {
         </Step>
 
         <Step>
-          <StepLabel>Busca tu nombre en la siguiente lista</StepLabel>
+          <StepLabel>Ingresa tu codigo</StepLabel>
           <StepContent>
             <div className="col-xs-12 col-lg-12">
-            <SelectField floatingLabelText="Encuentra tu nombre en la lista"
-              value={props.selectedUser.props.id}
+            <TextField 
+              floatingLabelText="Codigo"
+              value={props.userCode}
               onChange={props.onSelectUser}
-              style={{"width": "100%"}}>
-              {enrolledUsers}
-            </SelectField>
+              style={{"width": "100%"}}
+            />
             </div>
             {onRenderStepActions(1)}
           </StepContent>
