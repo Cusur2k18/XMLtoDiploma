@@ -1,17 +1,14 @@
 import React, { Component } from 'react';
-import ReactDOMServer from 'react-dom/server';
 import { connect } from 'react-redux';
 
 import * as homeActions from '../../store/actions';
 import * as jsPDF from 'jspdf'
-import * as canvg from 'canvg/canvg';
 
 import { Card, CardHeader, CardText } from 'material-ui/Card';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 
-import Diploma from '../../components/UI/Diploma/Diploma';
 import Congressman from '../../components/Congressman/Congressman';
 import Attendees from '../../components/Attendees/Attendees';
 
@@ -61,18 +58,21 @@ class Home extends Component {
   */
   createPdf = () => {
     const {stepIndex} = this.state;
-    let canvas = document.createElement('canvas'),
-        diplomaUser = this.state.form.event.props.users.find( u => u.id === this.state.userCode);
+    let diplomaUser = this.state.form.event.props.users.find( u => u.id === this.state.userCode);
   
     if (diplomaUser) {
-      canvg(canvas, ReactDOMServer.renderToStaticMarkup(<Diploma name={diplomaUser.name} />), {});
-      let imgData = canvas.toDataURL('image/png'), 
-          doc = new jsPDF('l', 'pt', 'a4'),
-          filename = `Contancia - ${diplomaUser.name.replace(/[\. ,:-]+/g, '-')}`;
-
-      doc.addImage(imgData, 'PNG', 0, 0, canvas.width * .53, canvas.height * .49);
-      doc.save(filename);
-      this.setState({ stepIndex: stepIndex + 1, finished: true });
+      // canvg(canvas, <img src="https://res.cloudinary.com/demo/image/upload/w_500/l_text:Arial_80:Flowers/flowers.jpg" alt="diploma"/>, {});
+      let doc = new jsPDF('l', 'pt', 'a4'),
+          filename = `Contancia - ${diplomaUser.name.replace(/[\. ,:-]+/g, '-')}`,
+          realImage = '';
+          
+      this.getDataUri('https://res.cloudinary.com/demo/image/upload/w_500/l_text:Arial_80:Flowers/flowers.jpg', 500, 500, (dataUri) => {
+        realImage = dataUri;
+        doc.addImage(realImage, 'PNG', 15, 40, 180, 160);
+        doc.save(filename);
+        this.setState({ stepIndex: stepIndex + 1, finished: true });
+      })
+      // doc.addImage(realImage, 'PNG', -100, -100, 0, 0);
     } else {
       const errorText = `El codigo no aparece en los registros del evento! Porfavor intenta de nuevo`;
       this.setState({ error: errorText })
@@ -148,6 +148,22 @@ class Home extends Component {
         }
       }
     })
+  }
+
+  getDataUri(url, width=100, height=100, callback) {
+    let image = new Image();
+    image.crossOrigin='Anonymous';   // See: https://stackoverflow.com/questions/22710627/tainted-canvases-may-not-be-exported
+    image.onload = function() {
+      console.log('exec on load');
+      let canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+
+      canvas.getContext('2d').drawImage(this, 0, 0);
+
+      callback(canvas.toDataURL('image/png'));
+    }
+    image.src = url;
   }
 
   render() {
