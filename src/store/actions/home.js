@@ -4,12 +4,13 @@ import axios from '../../axios-api';
 export const initData = () => {
   return dispatch => {
 
-    axios.get('/events.json')
+    axios.get('/data.json')
     .then( res => {
 
       if ( res.status === 200) {
 
-        dispatch(setEvents(res.data))
+        dispatch(setEvents(res.data.events))
+        dispatch(setCongressmen(res.data.congressmen))
       }
     })
     .catch( err => {
@@ -25,9 +26,9 @@ export const setEvents = (events) => {
   }
 }
 
-export const setUser = (user) => {
+export const setCongressmen = (congressmen) => {
   return {
-    type: actionTypes.SET_USER,
-    user: user
+    type: actionTypes.SET_CONGRESSMEN,
+    congressmen: congressmen
   }
 }

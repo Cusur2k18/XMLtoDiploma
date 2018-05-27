@@ -12,6 +12,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Congressman from '../../components/Congressman/Congressman';
 import Attendees from '../../components/Attendees/Attendees';
 
+import * as APP_CONSTANTS from '../../utils/constants';
+
 
 class Home extends Component {
   state = {
@@ -19,6 +21,7 @@ class Home extends Component {
     stepIndex: 0,
     userCode: '',
     error: '',
+    userType: APP_CONSTANTS.CONGRESS_TYPE,
     form: {
       event: {
         props: {
@@ -57,8 +60,13 @@ class Home extends Component {
   *     4.- Render the canvas with jsPDF
   */
   createPdf = () => {
-    const {stepIndex} = this.state;
-    let diplomaUser = this.state.form.event.props.users.find( u => u.id === this.state.userCode);
+    const {stepIndex, userType} = this.state;
+    let diplomaUser = null;
+    if (userType === APP_CONSTANTS.WORKSHOP_TYPE) {
+      diplomaUser = this.state.form.event.props.users.find( u => u.id === this.state.userCode);
+    } else {
+      diplomaUser = this.props.congressmen.find( u => u.code === this.state.userCode);
+    }
   
     if (diplomaUser) {
       // canvg(canvas, <img src="https://res.cloudinary.com/demo/image/upload/w_500/l_text:Arial_80:Flowers/flowers.jpg" alt="diploma"/>, {});
@@ -103,31 +111,33 @@ class Home extends Component {
     }
   }
 
-  resetValues = () => {
-    this.setState({
-      finished: false,
-      stepIndex: 0,
-      userCode: '',
-      error: '',
-      form: {
-        user: {
-          props: {
-            id: '',
-            name: ''
+  resetValues = (tabValue) => {
+    this.setState((state, props) => {
+      return {
+        finished: false,
+        stepIndex: 0,
+        userCode: '',
+        userType: typeof tabValue === 'string' ? tabValue : state.userType,
+        error: '',
+        form: {
+          user: {
+            props: {
+              id: '',
+              name: ''
+            },
+            validation: { required: true }
           },
-          validation: { required: true }
-        },
-        event: {
-          props: {
-            id: '',
-            name: '',
-            users: []
-          },
-          validation: { required: true }
+          event: {
+            props: {
+              id: '',
+              name: '',
+              users: []
+            },
+            validation: { required: true }
+          }
         }
       }
     })
-    this.props.onSetUser(null);
   }
 
   setUserCode = (evt, value) => {
@@ -154,7 +164,6 @@ class Home extends Component {
     let image = new Image();
     image.crossOrigin='Anonymous';   // See: https://stackoverflow.com/questions/22710627/tainted-canvases-may-not-be-exported
     image.onload = function() {
-      console.log('exec on load');
       let canvas = document.createElement('canvas');
       canvas.width = width;
       canvas.height = height;
@@ -185,9 +194,13 @@ class Home extends Component {
                 subtitle="Porfavor sigue los pasos para obtener tu constancia"
               />
               <CardText>
-                <Tabs tabItemContainerStyle={{ backgroundColor: '#28A0D1' }} inkBarStyle={{ backgroundColor: '#103E51'}} onChange={this.resetValues}>
+                <Tabs 
+                  value={this.state.userType}
+                  tabItemContainerStyle={{ backgroundColor: '#28A0D1' }} 
+                  inkBarStyle={{ backgroundColor: '#103E51'}} 
+                  onChange={this.resetValues}>
 
-                  <Tab label="Congresista" >
+                  <Tab label="Congresista" value={APP_CONSTANTS.CONGRESS_TYPE} >
                     <Attendees 
                       userCode={this.state.userCode}
                       stepIndex={this.state.stepIndex}
@@ -200,7 +213,7 @@ class Home extends Component {
                     />
                   </Tab>
 
-                  <Tab label="Asistencia a taller" >
+                  <Tab label="Asistencia a taller" value={APP_CONSTANTS.WORKSHOP_TYPE} >
                     <Congressman 
                       events={this.props.events}
                       eventId={this.state.form.event.props.id}
@@ -236,16 +249,14 @@ class Home extends Component {
 
 const mapStateToProps = (state) => ({
   events: state.events,
-  user: state.user,
+  congressmen: state.congressmen,
   error: state.error,
-  loading: state.loading,
-  eventId: state.eventId
+  loading: state.loading
 })
 
 const mapDispatchToProps = dispatch => {
   return {
-    onInit: () => dispatch(homeActions.initData()),
-    onSetUser: (user) => dispatch(homeActions.setUser(user))
+    onInit: () => dispatch(homeActions.initData())
   }
 }
 

@@ -1,4 +1,3 @@
 export {
-  initData,
-  setUser
+  initData
 } from './home';
