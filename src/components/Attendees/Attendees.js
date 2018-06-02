@@ -12,6 +12,7 @@ import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
 
 
+import checkvalidity from '../../utils/validation';
 import VerticalStepper from '../../components/UI/VerticalStepper/VerticalStepper';
 
 export default (props) => {
@@ -22,10 +23,13 @@ export default (props) => {
   */
   const onRenderStepActions = (step) => {
     const action = props.stepIndex === 1 ? props.onCreatePdf : props.onHandleNextStep
+    let valid = checkvalidity(props.userCode, props.validation)
 
     if (props.loading) {
+
       return <CircularProgress />
     } else {
+
       return (
         <div style={{margin: '12px 0'}}>
           <RaisedButton
@@ -33,6 +37,7 @@ export default (props) => {
             disableTouchRipple={true}
             disableFocusRipple={true}
             labelPosition="before"
+            disabled={!valid}
             primary={true}
             onClick={action}
             style={{marginRight: 12}}

@@ -1,70 +1,50 @@
 {
-  "events": [
-    {
-      "id": "CVCusur2018",
-      "name": "Congreso Veterinario del Sur 2018",
-      "users": [
-        { 
-          "id": "1",
-          "name": "Elma",
-          "lastname": "Canon Moreno"
-        },
-        { 
-          "id": "2",
-          "name": "Armando",
-          "lastname": "L. Slam"
-        },
-        { 
-          "id": "3",
-          "name":"Apolo",
-          "lastname": "Contreras A. Wilson"
-        },
-        { 
-          "id": "4",
-          "name": "Armando",
-          "lastname": "Pulido de Cabeza"
-        },
-        { 
-          "id": "5",
-          "name": "Mayte",
-          "lastname": "Benitez A. Juarez"
-        },
-        { 
-          "id": "6",
-          "name": "Moctezumo",
-          "lastname": "Cacana I. Pepilsin"
-        },
-        { 
-          "id": "7",
-          "name": "Elza",
-          "lastname": "Cabaña Blanco"
-        },
-        { 
-          "id": "8",
-          "name": "Casimiro",
-          "lastname": "Bello Cejudo"
-        },
-        { 
-          "id": "9",
-          "name": "Aquiles",
-          "lastname": "Aprieto Durero"
-        },
-        { 
-          "id": "10",
-          "name": "Fransico",
-          "lastname": "Zepeda D. Hidalgo"
-        },
-        { 
-          "id": "11",
-          "name": "Mohame",
-          "lastname": "de la Bella I. Haguado"
-        },
-        { 
-          "id": "12",
-          "name": "Alma Marcela",
-          "lastname": "Silva de Alegre"
-        }
-      ]
-    }
-  ]
+  "data": {
+    "congressmen": [
+      {
+        "name": "Abarca Villa Melina Yamile",
+        "code": "1231231"
+      },
+      {
+        "name": "Acosta de lacruz Vanessa Guadalupe",
+        "code": "sdfvsdfg345"
+      },
+      {
+        "name": "Aguilar Avalos Carolina",
+        "code": "sdfger34553"
+      },
+      {
+        "name": "Aguilar Davila Luis Enrique",
+        "code": "23425345dfghr"
+      },
+      {
+        "name": "Aceves Barragan Alondra Monserrat",
+        "code": "46787897855"
+      },
+      {
+        "name": "Aguilar Chávez Carolina",
+        "code": "sdfgsderg4789"
+    ],
+    "events": [
+      {
+        "id": "TESTING",
+        "name": "Evento para test",
+        "diploma_url": "http://res.cloudinary.com/crystalstream/image/upload/v1527452032/formato_odontologia.jpg",
+        "users": [
+          {
+            "id": "123423423r345",
+            "name": "JOSE DE JEUS."
+          },
+          {
+            "id": "sdfgsdfgergtert",
+            "name": "MIGUEL."
+          },
+          {
+            "id": "12342354543577888",
+            "name": "JOSE ARTURO."
+          }
+        ]
+      }
+    ]
+  }
 }

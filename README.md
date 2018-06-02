@@ -37,22 +37,38 @@ In order to have everything working you'll need to have an already defined schem
 
 ```javascript
 {
-  "events": [
-    {
-      "id": "<SomeID>",
-      "name": "<NiceName>",
-      "users": [
-        { 
-          "id": "<userId>",
-          "name": "<userName>",
-          "lastname": "<userLastName>"
-        },
-        .
-        .
-        .
-      ]
-    }
-  ]
+  {
+  "data": {
+    "congressmen": [
+      {
+        "name": "Some name",
+        "code": "some code"
+      },
+      .
+      .
+      .
+    ],
+    "events": [
+      {
+        "id": "ID_UNIQUE_FOR_EVENT",
+        "name": "Nice name",
+        "diploma_url": "This should be the image you want to print on the pdf",
+        "users": [
+          {
+            "id": "some code",
+            "name": "the name."
+          },
+          .
+          .
+          .
+        ]
+      },
+      .
+      .
+      .
+    ]
+  }
+}
 }
 ```
 
@@ -97,35 +113,3 @@ firebase deploy
 ```
 
 Enjoy it!
-
-
-## Hard Fixes! (Not sure who's fault)
-
-In order to do a succesfull build this libraries need to be pre-compiled first to ES5 (again, not sure who's fault).
-
-This is how you pre-compile the files with babel:
-
-#### [Precompile Files with Babel](https://booker.codes/how-to-build-and-publish-es6-npm-modules-today-with-babel/)
-
-
-- canvg
-  * jsdom - [Use this repo to fix this issue](https://github.com/CrystalStream/jsdom-lib-folder-pre-compiled-version)
-  * webidl-conversions - [Use this repo to fix this issue](https://github.com/CrystalStream/webidl-conversions)
-  * whatwg-url (weird version)
-
-- symbol-tree [Use this repo to fix the issue](https://github.com/CrystalStream/js-symbol-tree)
-
-We also need to pre-compile the file under `node_modules/canvg/node_modules/jsdom/jsdom.js`.
-
-Just go to that file, copy all and use the [Babel REPL](https://babeljs.io/repl/) to pre compile the file, and paste the result again in the same file`(node_modules/canvg/node_modules/jsdom/jsdom.js)`
-
-
-
-## TODO
-
-Due to the problems of the production build, will be better if we could ship the canvg library but pre compiled. This repo will contain that simple logic
-
-##### [Canvg pre-compiled](https://github.com/CrystalStream/canvg)
-
-
-We also need to make some improvments to the app, like not rendering the svg react component, instead just put some text in the images with canvas. See: [Insert text into images with canvas](https://stackoverflow.com/questions/41116851/how-to-add-text-on-image-using-javascript-and-canvas)

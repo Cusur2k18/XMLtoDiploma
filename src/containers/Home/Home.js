@@ -55,7 +55,16 @@ class Home extends Component {
 
 
   /**
-  * @description TODO
+  * @description This method renders the pdf
+  * 1.- We need to check what type of diploma we want to render
+  *
+  * 2.- After that we calculate the user and the diploma url for cloudinary
+  *     in this step we apply a transformation and add some text to the cloudinary image
+  *
+  * 3.- If we found a user, we get the data uri of the cloudinary image and we append that to
+  *     the document that renders the pdf.
+  *
+  * 4.- if the user is not found we show a nice alert.
   */
   createPdf = () => {
     this.setState({ loading: true })
@@ -216,6 +225,7 @@ class Home extends Component {
                       onChangeUserCode={this.setUserCode}
                       onResetValues={this.resetValues}
                       loading={this.state.loading}
+                      validation={{ required: true }}
                     />
                   </Tab>
 
