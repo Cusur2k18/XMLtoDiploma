@@ -21,6 +21,7 @@ class Home extends Component {
     stepIndex: 0,
     userCode: '',
     error: '',
+    loading: false,
     userType: APP_CONSTANTS.CONGRESS_TYPE,
     form: {
       event: {
@@ -57,6 +58,7 @@ class Home extends Component {
   * @description TODO
   */
   createPdf = () => {
+    this.setState({ loading: true })
     const {stepIndex, userType} = this.state;
     let diplomaUser = null;
     if (userType === APP_CONSTANTS.WORKSHOP_TYPE) {
@@ -71,11 +73,11 @@ class Home extends Component {
           realImage = '';
 
           //'https://res.cloudinary.com/demo/image/upload/w_500/l_text:Arial_80:Flowers/flowers.jpg'
-      this.getDataUri(APP_CONSTANTS.DEFAULT_DIPLOMA_URL, 1000, 1000, (dataUri, cw, ch) => {
+      this.getDataUri(APP_CONSTANTS.DEFAULT_DIPLOMA_URL.replace(/<NAME>/g, diplomaUser.name), 1000, 1000, (dataUri, cw, ch) => {
         realImage = dataUri;
         doc.addImage(realImage, 'PNG', 0, 0, 850, 600);
         doc.save(filename);
-        this.setState({ stepIndex: stepIndex + 1, finished: true });
+        this.setState({ stepIndex: stepIndex + 1, finished: true, loading: false });
       })
       // doc.addImage(realImage, 'PNG', -100, -100, 0, 0);
     } else {
@@ -208,6 +210,7 @@ class Home extends Component {
                       finished={this.state.finished}
                       onChangeUserCode={this.setUserCode}
                       onResetValues={this.resetValues}
+                      loading={this.state.loading}
                     />
                   </Tab>
 
@@ -225,7 +228,8 @@ class Home extends Component {
                       onResetValues={this.resetValues}
                       selectedEvent={this.state.form.event}
                       userCode={this.state.userCode}
-                      userValidation={{ required: true }}/>
+                      userValidation={{ required: true }}
+                      loading={this.state.loading}/>
                   </Tab>
                 </Tabs>
               </CardText>
