@@ -9,6 +9,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
 import TextField from 'material-ui/TextField';
+import CircularProgress from 'material-ui/CircularProgress';
+
 
 import VerticalStepper from '../../components/UI/VerticalStepper/VerticalStepper';
 
@@ -21,29 +23,33 @@ export default (props) => {
   const onRenderStepActions = (step) => {
     const action = props.stepIndex === 1 ? props.onCreatePdf : props.onHandleNextStep
 
-    return (
-      <div style={{margin: '12px 0'}}>
-        <RaisedButton
-          label={props.stepIndex === 1 ? 'Descargar pdf' : 'Siguiente'}
-          disableTouchRipple={true}
-          disableFocusRipple={true}
-          labelPosition="before"
-          primary={true}
-          onClick={action}
-          style={{marginRight: 12}}
-          icon={props.stepIndex === 1 ? <FontIcon className="fas fa-download" /> : null}
-        />
-        {step > 0 && (
-          <FlatButton
-            label="Regresar"
-            disabled={props.stepIndex === 0}
+    if (props.loading) {
+      return <CircularProgress />
+    } else {
+      return (
+        <div style={{margin: '12px 0'}}>
+          <RaisedButton
+            label={props.stepIndex === 1 ? 'Descargar pdf' : 'Siguiente'}
             disableTouchRipple={true}
             disableFocusRipple={true}
-            onClick={props.handlePrevStep}
+            labelPosition="before"
+            primary={true}
+            onClick={action}
+            style={{marginRight: 12}}
+            icon={props.stepIndex === 1 ? <FontIcon className="fas fa-download" /> : null}
           />
-        )}
-      </div>
-    );
+          {step > 0 && (
+            <FlatButton
+              label="Regresar"
+              disabled={props.stepIndex === 0}
+              disableTouchRipple={true}
+              disableFocusRipple={true}
+              onClick={props.handlePrevStep}
+            />
+          )}
+        </div>
+      );
+    }
   }
 
   return (

@@ -60,11 +60,16 @@ class Home extends Component {
   createPdf = () => {
     this.setState({ loading: true })
     const {stepIndex, userType} = this.state;
-    let diplomaUser = null;
+    let diplomaUser = null,
+        eventDiploma = null;
     if (userType === APP_CONSTANTS.WORKSHOP_TYPE) {
       diplomaUser = this.state.form.event.props.users.find( u => u.id === this.state.userCode);
+      //t_diploma/l_text:Verdana_25:<NAME>,g_center,y_60
+      console.log(' this.state.form.event',  this.state.form.event);
+      eventDiploma = this.state.form.event.props.diplomaUrl.split('upload').join(`upload/t_diploma/l_text:Verdana_25:${diplomaUser.name},g_center,y_60`);
     } else {
       diplomaUser = this.props.congressmen.find( u => u.code === this.state.userCode);
+      eventDiploma = APP_CONSTANTS.DEFAULT_DIPLOMA_URL.replace(/<NAME>/g, diplomaUser.name)
     }
   
     if (diplomaUser) {
@@ -73,7 +78,7 @@ class Home extends Component {
           realImage = '';
 
           //'https://res.cloudinary.com/demo/image/upload/w_500/l_text:Arial_80:Flowers/flowers.jpg'
-      this.getDataUri(APP_CONSTANTS.DEFAULT_DIPLOMA_URL.replace(/<NAME>/g, diplomaUser.name), 1000, 1000, (dataUri, cw, ch) => {
+      this.getDataUri(eventDiploma, 1000, 1000, (dataUri, cw, ch) => {
         realImage = dataUri;
         doc.addImage(realImage, 'PNG', 0, 0, 850, 600);
         doc.save(filename);
