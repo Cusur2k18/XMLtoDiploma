@@ -38,16 +38,19 @@ class Home extends Component {
 
 
   componentDidMount = () => {
+
     this.props.onInit();
   }
-  
+
   handleNextStep = () => {
     const {stepIndex} = this.state;
+
     this.setState({ stepIndex: stepIndex + 1, finished: stepIndex >= 2 });
   };
 
   handlePrevStep = () => {
     const {stepIndex} = this.state;
+
     if (stepIndex > 0) {
       this.setState({ stepIndex: stepIndex - 1 });
     }
@@ -67,20 +70,26 @@ class Home extends Component {
   * 4.- if the user is not found we show a nice alert.
   */
   createPdf = () => {
-    this.setState({ loading: true })
     const {stepIndex, userType} = this.state;
     let diplomaUser = null,
         eventDiploma = null;
+
+    this.setState({ loading: true })
     if (userType === APP_CONSTANTS.WORKSHOP_TYPE) {
       diplomaUser = this.state.form.event.props.users.find( u => u.id === this.state.userCode);
-      //t_diploma/l_text:Verdana_25:<NAME>,g_center,y_60
-      console.log(' this.state.form.event',  this.state.form.event);
-      eventDiploma = this.state.form.event.props.diplomaUrl.split('upload').join(`upload/t_diploma/l_text:Verdana_25:${diplomaUser.name},g_center,y_60`);
+
+      //  t_diploma/l_text:Verdana_25:<NAME>,g_center,y_60
+      if (diplomaUser) {
+        eventDiploma = this.state.form.event.props.diplomaUrl.split('upload').join(`upload/t_diploma/l_text:Verdana_25:${diplomaUser.name},g_center,y_60`);
+      }
     } else {
       diplomaUser = this.props.congressmen.find( u => u.code === this.state.userCode);
-      eventDiploma = APP_CONSTANTS.DEFAULT_DIPLOMA_URL.replace(/<NAME>/g, diplomaUser.name)
+
+      if (diplomaUser) {
+        eventDiploma = APP_CONSTANTS.DEFAULT_DIPLOMA_URL.replace(/<NAME>/g, diplomaUser.name)
+      }
     }
-  
+
     if (diplomaUser) {
       let doc = new jsPDF('l', 'pt', 'a4'),
           filename = `Contancia - ${diplomaUser.name.replace(/[\. ,:-]+/g, '-')}`,
@@ -96,12 +105,14 @@ class Home extends Component {
       // doc.addImage(realImage, 'PNG', -100, -100, 0, 0);
     } else {
       const errorText = `El codigo no aparece en los registros del evento! Porfavor intenta de nuevo`;
-      this.setState({ error: errorText })
+
+      this.setState({ error: errorText, loading: false });
     }
   }
  
   selectUserhandler = (evt, value) => {
-    this.setState({ userCode: value })
+
+    this.setState({ userCode: value });
   }
 
   selectEventHandler = (evt, index, value) => {
@@ -126,6 +137,7 @@ class Home extends Component {
   }
 
   resetValues = (tabValue) => {
+
     this.setState((state, props) => {
       return {
         finished: false,
@@ -155,6 +167,7 @@ class Home extends Component {
   }
 
   setUserCode = (evt, value) => {
+
     this.setState({ 
       userCode: value,
       form: {
@@ -177,15 +190,16 @@ class Home extends Component {
   getDataUri(url, width=100, height=100, callback) {
     let image = new Image();
     image.crossOrigin='Anonymous';   // See: https://stackoverflow.com/questions/22710627/tainted-canvases-may-not-be-exported
+
     image.onload = function() {
       let canvas = document.createElement('canvas');
       canvas.width = width;
       canvas.height = height;
 
       canvas.getContext('2d').drawImage(this, 0, 0, width, height);
-
       callback(canvas.toDataURL('image/png'));
     }
+
     image.src = url;
   }
 
