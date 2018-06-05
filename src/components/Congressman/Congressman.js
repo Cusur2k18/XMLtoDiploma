@@ -25,14 +25,16 @@ export default (props) => {
   */
   const onRenderStepActions = (step) => {
     const action = props.stepIndex === 2 ? props.onCreatePdf : props.onHandleNextStep
-
     let valid = checkvalidity(props.selectedEvent.props.name, props.selectedEvent.validation)
+
     if (props.stepIndex === 1) {
       valid = checkvalidity(props.userCode, props.userValidation)
     }
     if (props.loading) {
+
       return <CircularProgress />
     } else {
+
       return (
         <div style={{margin: '12px 0'}}>
           <RaisedButton
@@ -61,6 +63,7 @@ export default (props) => {
   }
 
   const events = props.events.map( event => {
+    
     return <MenuItem key={event.id} value={`${event.id}`} primaryText={event.name} />
   })
   
