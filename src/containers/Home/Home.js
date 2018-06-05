@@ -218,8 +218,8 @@ class Home extends Component {
           <div className="col-xs-12 col-sm-12 col-md-12 col-lg-7 mt-5">
             <Card>
               <CardHeader
-                title="Obten tu constancia"
-                subtitle="Porfavor sigue los pasos para obtener tu constancia"
+                title="Obtén tu constancia"
+                subtitle="Por favor sigue los pasos para obtener tu constancia"
               />
               <CardText>
                 <Tabs 

@@ -62,10 +62,10 @@ export default (props) => {
       <VerticalStepper stepIndex={props.stepIndex} finished={props.finished}>
 
         <Step>
-          <StepLabel>Introduce tu codigo:</StepLabel>
+          <StepLabel>Introduce tu código:</StepLabel>
           <StepContent>
             <div className="col-xs-12 col-lg-12">
-            <TextField floatingLabelText="Codigo"
+            <TextField floatingLabelText="Código"
               value={props.userCode}
               onChange={props.onChangeUserCode}
               style={{"width": "100%"}} 
@@ -76,21 +76,21 @@ export default (props) => {
         </Step>
 
         <Step>
-          <StepLabel>Listo!</StepLabel>
+          <StepLabel>¡Listo!</StepLabel>
           <StepContent>
             <p>
-              Solo da click en el boton de abajo y tendras tu constancia
+              Solo da click en el botón de abajo y tendrás tu constancia
               en PDF.
               <br/>
               <br/>
-              <small className="d-block d-sm-block d-md-none"><b>*(Ese proceso puede tardar un poco y se recomienda estar conectado a una red WiFi)</b></small>
+              <small className="d-block d-sm-block d-md-none"><b>*(Este proceso puede tardar un poco y se recomienda estar conectado a una red WiFi)</b></small>
             </p>
             {onRenderStepActions(1)}
           </StepContent>
         </Step>
       </VerticalStepper>
       {props.finished && (<div style={{ margin: "20px 0", textAlign: "center"}}>
-        <h2>Gracias por asistir!</h2>
+        <h2>¡Gracias por asistir!</h2>
         <FlatButton label="Descargar otr a contancia" fullWidth onClick={props.onResetValues}/>
       </div>)}
     </div>

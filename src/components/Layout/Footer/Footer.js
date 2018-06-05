@@ -10,10 +10,6 @@ export default () => {
           <ul className="footer-description">
             <li>CENTRO UNIVERSITARIO DEL SUR</li>
             <li>Av. Enrique Arreola Silva No. 883, colonia centro</li>
-          </ul>
-        </div>
-        <div className="col align-self-center text-center">
-          <ul className="footer-description">
             <li>C.P. 49000, Ciudad Guzmán, Jalisco, México.</li>
             <li>Teléfono: +52 (341) 575 2222, Fax: 01 (341) 5752223.</li>
           </ul>
