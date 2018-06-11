@@ -114,6 +114,7 @@ export default (props) => {
       </VerticalStepper>
       {props.finished && (<div style={{ margin: "20px 0", textAlign: "center"}}>
         <h2>¡Gracias por asistir!</h2>
+        <h5>Porfavor evalua este congreso! Da click <a href="http://virtual.cusur.udg.mx/limesurvey/index.php/144137?lang=es-MX" target="_blank" rel="noopener noreferrer">Aqui!</a></h5>
         <FlatButton label="Descargar otr a contancia" fullWidth onClick={props.onResetValues}/>
       </div>)}
     </div>
