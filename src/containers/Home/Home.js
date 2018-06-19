@@ -8,6 +8,7 @@ import { Card, CardHeader, CardText } from 'material-ui/Card';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
+import FontIcon from 'material-ui/FontIcon';
 
 import Congressman from '../../components/Congressman/Congressman';
 import Attendees from '../../components/Attendees/Attendees';
@@ -271,6 +272,11 @@ class Home extends Component {
             >
             {this.state.error}
             </Dialog>
+          </div>
+          <div className="col-sm-12 col-md-12 mt-2 text-center">
+            <h5>
+              ¡Por favor evalúa este congreso! Da click <a href="http://virtual.cusur.udg.mx/limesurvey/index.php/144137?lang=es-MX" target="_blank" rel="noopener noreferrer">Aqui!</a> <FontIcon className="fas fa-hand-point-left ml-4 in-out"/>
+            </h5>
           </div>
         </div>
       </div>

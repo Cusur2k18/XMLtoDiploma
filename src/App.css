@@ -17,3 +17,22 @@ body {
   right: 0;
   top: 0;
 }
+
+.in-out {
+  position: relative;
+  left: 0;
+  top: 0;
+  -webkit-animation: vibrate .8s infinite;
+  -moz-animation:    vibrate .8s infinite;
+  -o-animation:      vibrate .8s infinite;
+  animation:         vibrate .8s infinite;
+}
+
+@keyframes vibrate {
+    from {
+      left: 0;
+    }
+    to {
+      left: -20px;
+    }
+}

@@ -2,7 +2,7 @@
   background: #061F29;
   font-size: 22px;
   position: absolute;
-  bottom: -60px;
+  bottom: -30px;
   left: 0;
   right: 0;
   padding: 1rem 2rem;
@@ -44,5 +44,11 @@
 @media only screen and (max-width: 500px) {
   .footer {
     display: none;
+  }
+}
+
+@media only screen and (max-width: 1300px) {
+  .footer {
+    bottom: -120px;
   }
 }
